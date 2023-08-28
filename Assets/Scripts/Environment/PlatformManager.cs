@@ -34,7 +34,7 @@ public class PlatformManager : MonoBehaviour
 
     void SpawnInitialPlatforms()
     {
-        for (int i = 0; i < 5; i++) // Spawn some initial platforms
+        for (int i = 0; i < 10; i++) // Spawn some initial platforms
         {
             SpawnPlatform();
         }

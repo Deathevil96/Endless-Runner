@@ -8,6 +8,7 @@ public class PlatformManager : MonoBehaviour
     public Transform playerCamera; // Reference to the player's camera
     public float platformSpawnDistance = 50f; // Distance ahead of the player to spawn platforms
     public float platformDestroyDistance = 30f; // Distance behind the player to destroy platforms
+    public List<GameObject> obstaclePrefabs; // List of obstacle prefabs
 
     private List<GameObject> activePlatforms = new List<GameObject>();
 
@@ -51,16 +52,17 @@ public class PlatformManager : MonoBehaviour
         }
 
         GameObject newPlatform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
+        GameObject obstaclePrefabToSpawn = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Count)];
         activePlatforms.Add(newPlatform);
 
         // Spawn obstacles randomly with the platforms
         if (Random.Range(0f, 1f) < 0.5f) // Adjust the probability as needed
         {
-            SpawnObstacle(newPlatform);
+            SpawnObstacle(newPlatform, obstaclePrefabToSpawn);
         }
     }
 
-    void SpawnObstacle(GameObject platform)
+    void SpawnObstacle(GameObject platform, GameObject obstaclePrefab)
     {
         float obstacleXPosition = Random.Range(-4.4f, 4.4f); // Obstacle position between -4.4 and 4.4
         Vector3 obstaclePosition = new Vector3(obstacleXPosition, 0.5f, platform.transform.position.z);

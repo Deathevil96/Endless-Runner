@@ -8,14 +8,16 @@ public class PlayerInput : MonoBehaviour
     public static float rightside = 4.40f;
     public float internalRight;
     public float internalLeft;
+    private int _maxHealth = 2;
+    private int _currHealth;
 
     //Touch variables
     private Vector2 touchStartPos;
-    private bool isSwiping = false;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        _currHealth = _maxHealth;
     }
 
     // Update is called once per frame
@@ -87,5 +89,37 @@ public class PlayerInput : MonoBehaviour
             transform.Translate(Vector3.right * leftRightTurnSpeed * Time.deltaTime);
             Debug.Log("Touch working Right");
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Obstacle"))
+        {
+            Destroy(this.gameObject);
+        }
+
+        if (other.CompareTag("SoftObstacle"))
+        {
+            _currHealth -= 1;
+            Debug.Log("CareFul!");
+            if (_currHealth <= 0)
+            {
+                Die();
+            }
+        }
+    }
+    public void takeDamage(int Damage)
+    {
+        _currHealth -= Damage;
+
+        if (_currHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Destroy(this.gameObject);
     }
 }
